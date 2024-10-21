@@ -1,7 +1,4 @@
 ---
 ---
 
-@import '{{ site.theme }}';
-.markdown-body {
-  font-family: "Comic Sans MS", "Comic Sans", cursive;
-}
+@import "{{ site.theme }}";
