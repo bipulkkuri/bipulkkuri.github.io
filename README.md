@@ -6,4 +6,4 @@ This page gives overview of AWS services required for AWS Data Engineering Assoc
 
 AWS EC2
 
-![AWS EC2](/docs/assets/images/AWS-DEA-C01-Layout.png)
+![AWS EC2](/docs/assets/images/AWS-EC2.png)
