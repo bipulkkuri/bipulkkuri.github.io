@@ -9,4 +9,9 @@ AWS EC2
 ![AWS EC2](/docs/assets/images/AWS-EC2.png)
 
 AWS MWAA Airflow
-![AWS EC2](/docs/assets/images/AWS-Airflow.png)
+![AWS MWAA](/docs/assets/images/AWS-Airflow.png)
+
+
+AWS DataSync
+
+![AWS DataSync](/docs/assets/images/AWS-DataSync.svg)
