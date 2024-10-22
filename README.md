@@ -1,5 +1,5 @@
 
-This page gives overview of AWS services required for AWS Data Engineering Associate certification.Consider this as a cheat sheet,A viual representation of things to cover.
+This page gives overview of AWS services required for AWS Data Engineering Associate certification.Consider this as a cheat sheet,A visual representation of things to cover.
 
 ![AWS DEA-C01](/docs/assets/images/AWS-DEA-C01-Layout.png)
 
