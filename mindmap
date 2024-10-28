@@ -1,0 +1,102 @@
+#https://markmap.js.org/repl
+---
+title: AWS DEA - C01 Study Guide
+markmap:
+  colorFreezeLevel: 2
+---
+
+## Developer tools 
+- [AWS CLI] Command Line Interface
+- [AWS Cloud 9] IDE
+
+## Networking and Content Delivery
+- [AWS route 53] DNS 
+- [AWS VPC] Virtual Private Connect 
+- [AWS Cloud Front] CDN 
+
+## Security & Compliance
+### Frontend
+- AWS WAF
+- AWS Sheild
+- AWS Guard duty
+### Authn & Authz
+- IAM
+- KMS
+- Cognito
+### Compliance
+- Secret manager
+- Macie
+
+## Frontend
+- [AWS Api Gateway] Rest and websocket
+
+
+
+## Computation
+
+### AWS Compute 
+- [AWS EC2] Elastic Compute Cloud
+- [AWS Lambda] Serverless
+- [AWS Batch] Batch
+
+### AWS Container
+- [AWS EKS] Managed Elastic Kubernetes Service (open sourced) CSI Container Storgae Interface
+  - Managed Node groups
+  - Self Managed nodes
+  - Aws Fargate EFS only 
+- [AWS ECS] Managed Elastic Containers Service
+  - ECS agent on EC2
+  - ECS Fargate (serverless)
+
+
+## Storage
+- AWS S3
+  - S3 Standard
+  -  S3 Infrequent Access
+  -  S3 One Zone Infrequent Access
+  - S3 Glacier Instant Retrival millisecond retirieval 90 Days minimmum storage
+  - S3 Glacier Flexible Retrival
+    - Expidited - 1 to 5 min
+    - Standard - 3 to 5 hrs 
+    - Bulk - 5 to 12 hrs
+      
+  - S3 Glacier Deep Archive
+  - S3 IntelligentTiering
+     
+- AWS SnowFamily
+  1. Snowmobile
+  2. Snowcone
+     
+- [AWS EBS]
+- [AWS EFS]
+- [AWS Backup]
+
+## Analytics
+- AWS Redshift
+- AWS EMR
+- AWS Lakeformation: built over glue,does everything glue can do
+  - Usecase: Build data lake over days easily
+  - Cross account : Reciepent must be Data lake admin, AWS RAM for external to your org
+  - Governed Tables: for ACID,automatic Compactions and optimized
+  - Fine Granular Row, Cell and coloumn level security
+ 
+- AWS Glue Serverless Fully Managed, custom ETL jobs
+  - AWS Glue Crawler builds catalog
+  - UseCase:ETL is based on Spark for other engines use EMR
+  - AWS Glue studio : visual interface DAG ,monitoring
+  - AWS Glue Data Quality : DQDL Data Quality Definaition Language
+  - AWS Glue DataBrew: Transform data from UI ,Destination to S3
+  - AWS Gluw Workflows: orchestration tool within Glue for ETL,Trigger support(cron,ondemand,eventbridge events)
+- AWS OpenSearch
+- AWS Athena: serverless interactive SQL from S3
+  - Support many data formats csv tsv json parquet orc avro
+  - Wrokgroup: organize users/ teams/ apps, can set data limits per group
+  - optimization: use orc parquet , use large file
+- AWS Flink
+- AWS Kafka
+- AWS Kinesis
+- AWS QuickSight: highly formatted reports/visualization
+
+
+## Machine Learning
+- [AWS SageMaker] SageMaker
