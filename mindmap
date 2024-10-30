@@ -8,6 +8,9 @@ markmap:
 ## Developer tools 
 - [AWS CLI] Command Line Interface
 - [AWS Cloud 9] IDE
+- AWS CodeBuild
+- AWS CodeDeploy
+- AWS CodePipeline
 
 ## Networking and Content Delivery
 - [AWS route 53] DNS 
@@ -36,7 +39,7 @@ markmap:
 
 ### AWS Compute 
 - [AWS EC2] Elastic Compute Cloud
-- [AWS Lambda] Serverless
+- [AWS Lambda] **Serverless**
 - [AWS Batch] Batch
 
 ### AWS Container
@@ -46,7 +49,7 @@ markmap:
   - Aws Fargate EFS only 
 - [AWS ECS] Managed Elastic Containers Service
   - ECS agent on EC2
-  - ECS Fargate (serverless)
+  - ECS Fargate **serverless**
 
 
 ## Storage
@@ -61,7 +64,7 @@ markmap:
     - Bulk - 5 to 12 hrs
       
   - S3 Glacier Deep Archive
-  - S3 IntelligentTiering
+  - S3 Intelligent Tiering
      
 - AWS SnowFamily
   1. Snowmobile
@@ -73,28 +76,78 @@ markmap:
 
 ## Analytics
 - AWS Redshift
-- AWS EMR
+- AWS Kinesis Analytics Airflow: data streaming run flink applications
+-  - supports sql over Table api
+   - streaming ETL
+   - continous metric generation 
+- AWS EMR: Managed Framwork on EC2
+  - Nodes
+    - Master node: manages nodes
+    - Core node: distributing work stores data
+    - Task node: runs tasks does not store data good for spot instances.
+  - Clusters
+     - Transient cluster: shutsdown when jobs complete
+     - Long Running cluster auto termination is off by default
+  - Storage
+    - HDFS: ephemeral,fastest
+    - EMRFS: persistent storage with S3
+    - Local:ephemeral
+    - EBS on HDFS: ephemeral
+- AWS EMR **Serverless**: All in one region
+- AWS EMR on EKS:Fully managed
 - AWS Lakeformation: built over glue,does everything glue can do
   - Usecase: Build data lake over days easily
   - Cross account : Reciepent must be Data lake admin, AWS RAM for external to your org
   - Governed Tables: for ACID,automatic Compactions and optimized
   - Fine Granular Row, Cell and coloumn level security
  
-- AWS Glue Serverless Fully Managed, custom ETL jobs
+- AWS Glue **Serverless** Fully Managed, custom ETL jobs
   - AWS Glue Crawler builds catalog
   - UseCase:ETL is based on Spark for other engines use EMR
   - AWS Glue studio : visual interface DAG ,monitoring
   - AWS Glue Data Quality : DQDL Data Quality Definaition Language
   - AWS Glue DataBrew: Transform data from UI ,Destination to S3
   - AWS Gluw Workflows: orchestration tool within Glue for ETL,Trigger support(cron,ondemand,eventbridge events)
-- AWS OpenSearch
-- AWS Athena: serverless interactive SQL from S3
+- AWS OpenSearch: Petabyte scaling and reporting,search engine
+  - Kibana === Dashboard for visualization
+  - Full text search,log & security analysis,application monitoring
+  - **Managed**
+  - **Serverless**
+- AWS Athena: **Serverless** interactive SQL from S3
   - Support many data formats csv tsv json parquet orc avro
   - Wrokgroup: organize users/ teams/ apps, can set data limits per group
   - optimization: use orc parquet , use large file
+  - ACID suuport table type ICEBERG
+  - Manual compaction OPTIMIZE table to increase performance
+  - Table level locks using IAM
 - AWS Flink
-- AWS Kafka
-- AWS Kinesis
+- AWS MSK Kafka: multi AZ , data is stored in EBS volume,more configurable,can only add partition to topic
+  - AWS Kafka : Fully managed
+  - AWS Kafka **Serverless** , AWS manages provisions resources and scales capacity 
+  - MSK connect:Worker pulls data 
+  - Data size 1MB or more is supported
+- AWS Kinesis Data Streams: has shards, need to manage sharding add remove of shards possible
+   - ProvisonedThroughPutException: Solution retry backoff , increase shards, proper sharding
+  - Producers: **Data max 1MB size**, 1000Msg/sec,3rd Party library
+    - SDK: usecase low throuhput , high latency simple api
+    - KPL : **asyncronous API** ,auto retry, batching (Aggregation,collection) by RecordMaxBufferTime()100ms
+    - SDK: sends as fast possible ,usecase iot send latest only data iot when comes online
+    - Kinesis Agent: log files send by agent installed on linux ,preprocessing and routing
+  - Consumers: 2Mb/sec(shared) or 2MB/sec enhanced per shard per cosnumer,2MB data size
+     - SDK:Polled getrecords 
+     - KCL: checkpointing ,ExpiredIteratorException-> increase WCU in dynamodb,200ms high latency,low cost,supports out of order resharding issue
+     - Kiniesis Connector Library:
+     - 3rd party lib:
+     - Kiniess Firehose
+     - AWS Lambda
+     - Fanout: 2MB/s ,pulling data ,for multiple consumers, low latency ,high cost
+  - Capacity Modes:
+    - Provisioned mode:1MB/sec
+    - Ondemand mode:4MB/sec,use when unknown traffic
+- AWS Kinesis Data Firehose: **fully managed no administration** 1MB/s.,Uses Batch Writes so near real time service. used to trasnsfer data use lamda to transform
+-   - Destinations: S3,Redshift,Opensearch,3rd party datadog,splunk,mongodb,... ,HTTP endpoint
+    - **Spark and KCL cannot read from KDF**
+    - Automated scaling
 - AWS QuickSight: highly formatted reports/visualization
 
 
