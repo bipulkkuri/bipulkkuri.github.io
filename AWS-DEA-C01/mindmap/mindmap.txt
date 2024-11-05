@@ -1,8 +1,9 @@
-#https://markmap.js.org/repl
 ---
 title: AWS DEA - C01 Study Guide
 markmap:
   colorFreezeLevel: 2
+  maxWidth: 300
+  embedAssets: true
 ---
 
 ## Developer tools 
@@ -74,6 +75,25 @@ markmap:
 - [AWS EFS]
 - [AWS Backup]
 
+## App Integration
+- AWS SQS
+- AWS SNS
+- AWS APPFlow: Securly transfer data between SAAS aaplication and AWS (salesforce)
+- AWS Eventbridge: 
+- AWS Step Function : used to design and manage workflows with visualization
+    - Advanced error handling and retry
+    - audit history
+    - States
+       - task: do some sort of real operation 
+       - choice: conditional logic
+       - wait: time delay
+       - parallel: diff thing at same time
+       - map: run things in parallel for each item in dataset
+       - pass:
+       - fail:
+       - successed:
+  
+
 ## Analytics
 - AWS Redshift
 - AWS Kinesis Analytics Airflow: data streaming run flink applications
@@ -89,9 +109,9 @@ markmap:
      - Transient cluster: shutsdown when jobs complete
      - Long Running cluster auto termination is off by default
   - Storage
-    - HDFS: ephemeral,fastest
-    - EMRFS: persistent storage with S3
-    - Local:ephemeral
+    - HDFS: Ephemeral,fastest
+    - EMRFS: Persistent storage with S3
+    - Local:Ephemeral
     - EBS on HDFS: ephemeral
 - AWS EMR **Serverless**: All in one region
 - AWS EMR on EKS:Fully managed
@@ -107,16 +127,16 @@ markmap:
   - AWS Glue studio : visual interface DAG ,monitoring
   - AWS Glue Data Quality : DQDL Data Quality Definaition Language
   - AWS Glue DataBrew: Transform data from UI ,Destination to S3
-  - AWS Gluw Workflows: orchestration tool within Glue for ETL,Trigger support(cron,ondemand,eventbridge events)
-- AWS OpenSearch: Petabyte scaling and reporting,search engine
+  - AWS Glue Workflows: orchestration tool within Glue for ETL,Trigger support(cron,ondemand,eventbridge events)
+- AWS OpenSearch: Petabyte scaling and reporting,search engine and analytics
   - Kibana === Dashboard for visualization
   - Full text search,log & security analysis,application monitoring
-  - **Managed**
-  - **Serverless**
-- AWS Athena: **Serverless** interactive SQL from S3
+  - **Managed** Scale up and down without downtime but is not automatic.
+  - **Serverless** on demand autoscaling ,collections(search /Time series)
+- AWS Athena: **Serverless** interactive SQL from S3,Adhoc data Query
   - Support many data formats csv tsv json parquet orc avro
   - Wrokgroup: organize users/ teams/ apps, can set data limits per group
-  - optimization: use orc parquet , use large file
+  - optimization: use ORC parquet , use large file
   - ACID suuport table type ICEBERG
   - Manual compaction OPTIMIZE table to increase performance
   - Table level locks using IAM
@@ -145,10 +165,17 @@ markmap:
     - Provisioned mode:1MB/sec
     - Ondemand mode:4MB/sec,use when unknown traffic
 - AWS Kinesis Data Firehose: **fully managed no administration** 1MB/s.,Uses Batch Writes so near real time service. used to trasnsfer data use lamda to transform
--   - Destinations: S3,Redshift,Opensearch,3rd party datadog,splunk,mongodb,... ,HTTP endpoint
+    - Destinations: S3,Redshift,Opensearch,3rd party datadog,splunk,mongodb,... ,HTTP endpoint
     - **Spark and KCL cannot read from KDF**
     - Automated scaling
-- AWS QuickSight: highly formatted reports/visualization
+- AWS QuickSight: **Serverless** highly formatted reports/visualization, Business analytics service 
+   - Build Visualization
+   - Paginated reports
+   - **Adhoc** analysis
+   - Anytime any device
+   - Alert on anomoly
+   - SPICE : Super fast Parallel in Memmory Calculation Engine: 10GB per user,30min limit, for Large datasets
+   - not for highly formatted canned reports or ETL
 
 
 ## Machine Learning
