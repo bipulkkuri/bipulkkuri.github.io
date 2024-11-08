@@ -76,10 +76,35 @@ markmap:
 - [AWS Backup]
 
 ## App Integration
-- AWS SQS
-- AWS SNS
+- AWS SQS: consumers polls from queue **fully managed** 1-14days,best effort ordering,for decoupling applications
+  - 256kb msg size,Strings,10msg limit by consumer
+  - Consumer delete after processing
+  - FIFO queue has orering but decrease throuhput
+  - only body is encrypted
+  - one application per queue
+  - Usecase: order/image prcessing request offlading,
+    
+- AWS SNS: one message to many /PubSub
+  - Event Producer only sends msg to one SNS topic
+  - 12.5Million subscribers per topic.10k topic per account limit
+  - TOPIC (using SDK)and Direct Publish option(APNS/GCM/ADM)
+  - SNS+SQS fanout pattern
+  - SNS Message filtering with SQS
+
+- AWS Apache Airflow(MWAA):**managed service** batch oriented workflow tool
+   - DAG Python based 
+   - complex workflow
+   - ETL cordination
+   - ML data prep
+
 - AWS APPFlow: Securly transfer data between SAAS aaplication and AWS (salesforce)
-- AWS Eventbridge: 
+- AWS Eventbridge: is a default event bus
+  - Schedule cron jobs
+  - Event rules to do some service
+  - Trigger Lambda
+  - **PARTNER Event Bus** SAAS zendesk dadtadog
+  - You can archive events for replay
+  - Resource based policy for cross account access
 - AWS Step Function : used to design and manage workflows with visualization
     - Advanced error handling and retry
     - audit history
@@ -124,7 +149,7 @@ markmap:
 - AWS Glue **Serverless** Fully Managed, custom ETL jobs
   - AWS Glue Crawler builds catalog
   - UseCase:ETL is based on Spark for other engines use EMR
-  - AWS Glue studio : visual interface DAG ,monitoring
+  - AWS Glue Studio : visual interface DAG ,monitoring
   - AWS Glue Data Quality : DQDL Data Quality Definaition Language
   - AWS Glue DataBrew: Transform data from UI ,Destination to S3
   - AWS Glue Workflows: orchestration tool within Glue for ETL,Trigger support(cron,ondemand,eventbridge events)
@@ -148,11 +173,13 @@ markmap:
   - Data size 1MB or more is supported
 - AWS Kinesis Data Streams: has shards, need to manage sharding add remove of shards possible
    - ProvisonedThroughPutException: Solution retry backoff , increase shards, proper sharding
+   - Usecase: log event data collection/complex stream processing/ mobile/iot/gaming feeds /realtime data analytics
   - Producers: **Data max 1MB size**, 1000Msg/sec,3rd Party library
     - SDK: usecase low throuhput , high latency simple api
     - KPL : **asyncronous API** ,auto retry, batching (Aggregation,collection) by RecordMaxBufferTime()100ms
     - SDK: sends as fast possible ,usecase iot send latest only data iot when comes online
     - Kinesis Agent: log files send by agent installed on linux ,preprocessing and routing
+    - ordering at shard level,data can be consumed many times ,data is deleted after retention period
   - Consumers: 2Mb/sec(shared) or 2MB/sec enhanced per shard per cosnumer,2MB data size
      - SDK:Polled getrecords 
      - KCL: checkpointing ,ExpiredIteratorException-> increase WCU in dynamodb,200ms high latency,low cost,supports out of order resharding issue
@@ -166,8 +193,9 @@ markmap:
     - Ondemand mode:4MB/sec,use when unknown traffic
 - AWS Kinesis Data Firehose: **fully managed no administration** 1MB/s.,Uses Batch Writes so near real time service. used to trasnsfer data use lamda to transform
     - Destinations: S3,Redshift,Opensearch,3rd party datadog,splunk,mongodb,... ,HTTP endpoint
-    - **Spark and KCL cannot read from KDF**
+    - Spark and KCL **cannot read from Kinesis Data Frame**
     - Automated scaling
+    - 128Mb at destination Max object size
 - AWS QuickSight: **Serverless** highly formatted reports/visualization, Business analytics service 
    - Build Visualization
    - Paginated reports
@@ -177,6 +205,46 @@ markmap:
    - SPICE : Super fast Parallel in Memmory Calculation Engine: 10GB per user,30min limit, for Large datasets
    - not for highly formatted canned reports or ETL
 
+## Management and Governance
+- AWS Cloudwatch : Metrics, allows custom metric,streamable near realtime van send to KDF,Log insight gives dashboard, can send alarms
+- AWS CloudTrail : events/API logs for governance audit and compliance,Global Service
+  - Cloudtrial Lake: lake ORC format for cloudtrial events ,use sql 
+- AWS Config : auditing and compliance , record config changes over time and get alarm
+- AWS CloudFormation : IAC yaml
+- AWS SSM Parameter Store: Secure storage for configuration and secrets **serverless** version tracking of config/secrets
+- - **no password rotation**
+  - **no cross account access**
+  - Standard and Advanced type store
+- AWS well architected framework
+   - stop guessing capacity
+   - automate
+   - test system at prod scale
+   - drive arch using data
+   - 6 pillars
+      - Opration
+      - Security
+      - Reliability
+      - Performance
+      - Cost
+      - Sustainbility
 
+## Networking and CDN
+- AWS PrivateLink: used for connecting vendor VPC to your VPC  via vendor side NLB and customer side ENI
+- VPC: Virtual Private Cloud
+- Subnet: partition of VPC(public and Private): route tables define access between internet and subnets
+- Internet Gateway : is used by public subnet connects to Internet
+- NAT Gateway : is deployed in Public subnet and private subnet uses it to access internet
+- NACL : network ACL firewall **allow /deny** at subnet level at IP level,stateless
+- Security Group : a firewall controlls traffic for EC2 and ENI only **ALLOW** rules,both IP and SecurityGroups rules,statefull
+- VPC flow Logs: all network traffic logs
+- VPC Peering : connect 2 VPC (same or diff accounts),non trasitive A-B-C,non overlapping IP
+- VPC Endpoint : use private network to connect AWS public services **ONLY S3/DynamoDB**
+- VPN : Site to Site VPN over public internet on premise to AWs
+- Direct Connect : Physical connection between on premise and AWS
+- Route53 : DNS **fully managed** ,is also Domain registrar , 100% availability gurantee
+-  - Public Hosted Zone: on public hosting from internet
+   - Private Hosted Zone : within VPC
+- CloudFront : CDN,global edge locations
+  - Origins:  S3 ,Custom Origin(http endpoint)
 ## Machine Learning
 - [AWS SageMaker] SageMaker
