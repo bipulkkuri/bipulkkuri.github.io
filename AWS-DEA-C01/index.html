@@ -62,41 +62,49 @@
 <p>This page gives overview of AWS services required for AWS Data Engineering Associate certification.Consider this as a cheat sheet,A visual representation of things to cover.</p>
 
 <p><img src="/docs/assets/images/AWS-DEA-C01-Layout.png" alt="AWS DEA-C01" /></p>
-<p>DataWarehouse vs DataLake</p>
+<p>Data Warehouse vs Data Lake vs Data LakeHouse</p>
           
 <table style="width: 100%;" border="2">
 <tbody>
 <tr>
-<td><b>DataWarehouse</b></td>
-<td><b>DataLake</b></td>
+<td><b>Data Warehouse</b></td>
+<td><b>Data Lake</b></td>
+<td><b>Data LakeHouse</b></td>
 </tr>
 <tr>
 <td>costly</td>
+<td>Often more cost-effective</td>
 <td>Often more cost-effective</td>
 </tr>
 <tr>
 <td>Access is typically limited to business analysts and decision-makers who require structured data for reporting.</td>
 <td>Accessible to a broader range of users, including data scientists and engineers, who can work with raw data for various analytical purposes.</td>
+<td>mix use</td>
 </tr> 
 <tr>
 <td>ETL</td>
 <td>ELT</td>
+<td>&nbsp;</td>
 </tr>  
 <tr>
 <td>Primarily stores structured data. Data is organized into tables with defined schemas.</td>
 <td>Can store structured, semi-structured, and unstructured data. Data is kept in its raw form.</td>
+<td>Can store structured, semi-structured, and unstructured data. Data is kept in its raw form.</td>  
 </tr>   
 <tr>
 <td>Designed for reporting and analysis. It supports business intelligence tools and provides insights through predefined queries</td>
 <td>Intended for data exploration and experimentation. It allows for advanced analytics, machine learning, and big data processing</td>
+<td>ACID transactions</td>
 </tr>  
 <tr>
 <td>Example: RedShift</td>
 <td>Example: S3 </td>
+<td>Example: AWS Lake formation (s3 as lake , redhift as warehouse) </td>
 </tr>   
 <tr>
 <td>Use when: you have structred data ,fast complex queries,data integration from different sources,BI and analytics need</td>
 <td>Use when: mixture of data , when you dont know future use as its flexible, Advanced analytics, ML , data discovery goals</td>
+<td>mix use cost eefective</td>
 </tr>     
 </tbody>
 </table> 
