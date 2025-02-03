@@ -9,7 +9,7 @@ Oauth2
 
 
 Study Notes
-
+Data Lineage: A visual representation that traces the data transformation through its lifecycle from source to final destination 
 Splitting a database into many databases based on the business domain is called Federation. Like DB for user,account,address,product ,Used to scale easily
 
 Splitting a single dataset across many servers is called Sharding. Used to scale out
