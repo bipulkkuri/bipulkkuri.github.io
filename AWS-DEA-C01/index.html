@@ -67,19 +67,33 @@
 <table style="width: 1%;" border="1">
 <tbody>
 <tr>
-<td> ETL</td>  
 <td>DataWarehouse</td>
 <td>DataLake</td>
 </tr>
 <tr>
 <td>costly</td>
-<td>business analysts and decision-makers who require structured data for reporting.</td>
+<td>Often more cost-effective</td>
 </tr>
 <tr>
-<td> ELT</td>  
-<td> Often more cost-effective</td>
-<td>broader range of users, including data scientists and engineers, who can work with raw data for various analytical purposes.</td>
-</tr>
+<td>Access is typically limited to business analysts and decision-makers who require structured data for reporting.</td>
+<td>Accessible to a broader range of users, including data scientists and engineers, who can work with raw data for various analytical purposes.</td>
+</tr> 
+<tr>
+<td>ETL</td>
+<td>ELT</td>
+</tr>  
+<tr>
+<td>Primarily stores structured data. Data is organized into tables with defined schemas.</td>
+<td>Can store structured, semi-structured, and unstructured data. Data is kept in its raw form.</td>
+</tr>   
+<tr>
+<td>Designed for reporting and analysis. It supports business intelligence tools and provides insights through predefined queries</td>
+<td>Intended for data exploration and experimentation. It allows for advanced analytics, machine learning, and big data processing</td>
+</tr>  
+<tr>
+<td>Example: RedShift</td>
+<td>Example: S3 </td>
+</tr>   
 </tbody>
 </table> 
 <p>AWS EC2</p>
