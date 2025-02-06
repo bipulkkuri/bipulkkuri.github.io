@@ -116,7 +116,7 @@
             </tr>
           </tbody>
         </table>
-        <p><br><b>Use case by AWS components</b> <br></p>
+        <p><br><b>Use case by AWS Resources</b> <br></p>
         <table style="width: 100%;" border="solid black" border-radius="10px;">
           <tbody>
             <tr>
@@ -129,7 +129,20 @@
               <td>EFS</td>
               <td>Content Management ,web serving, data sharing ,wordpress</td>
               <td>Costly</td>
-              <td>HA</td>
+              <td>HA, One EFS can connect to multiple instances across Zones</td>
+            </tr>
+            <tr>
+              <td>EBS</td>
+              <td>when data needs to be persisted between terminations, faster io , application storage and DB, </td>
+              <td>less costly than EFS</td>
+              <td>not HA,can only attach to one instance</td>
+            </tr>
+            <tr>
+              <td>AWS Backup</td>
+              <td>centrally manage and automate backup of EC2/S3/RDS/EFS/DocumentDB/AWSstoragegateway,cross region and
+                cross account backup,support PITR </td>
+              <td></td>
+              <td>Fully managed service, automatically internally backedup in S3</td>
             </tr>
           </tbody>
         </table>
