@@ -127,7 +127,10 @@
             </tr>
             <tr>
               <td>AWS S3</td>
-              <td>Object Storage: unlimited data storage, backup and recovery, and big data analytics,web hosting,backup recovery,application data</td>
+              <td>Object Storage: unlimited data storage, backup and recovery, 
+                and big data analytics,web hosting,backup recovery,application data
+                when data is colder and large
+              </td>
               <td>cheap and based on tier</td>
               <td>HA</td>
             </tr>
@@ -152,9 +155,13 @@
             </tr>
             <tr>
               <td>AWS DyanamoDB</td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>Mobile gaming ,sensor network, gaming, digital ad serving, ecommerce shopping.,
+                 web session management,capturing live events like voting,meta data storage for s3,
+                 any time data is hot and small and to be injested at scale
+                When not to use : Relational data,blob,joins, low read writes
+              </td>
+              <td>normal pay by provision,ondemand is 2.5 times expensive</td>
+              <td>Fully managed service, High HA multi region </td>
             </tr>
             <tr>
               <td>AWS RDS</td>
@@ -164,42 +171,46 @@
             </tr>
             <tr>
               <td>AWS DocumentDB</td>
+              <td>mongodb replacementJSON ,Million req/s,increments of 10Gb, web mobile games,streaming</td>
               <td></td>
-              <td></td>
-              <td></td>
+              <td>Fully managed service, High HA multi region 3AZ</td>
             </tr>
             <tr>
               <td>AWS MemmoryDB</td>
+              <td>Redis compatible API in memmory Database 160M req/s,10GB,100TB,ultra fast</td>
               <td></td>
-              <td></td>
-              <td></td>
+              <td>Multi az transaction log</td>
             </tr>
-            <tr>
-              <td>AWS MemmoryDB</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+           
             <tr>
               <td>AWS Keyspaces</td>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>Apache cassandra,nosql distributed,fully managed,iot devices, time-series,cql </td>
+              <td>fully managed,</td>
+              <td>single digit ms latency, 1000Req/s,multi az 3 times replication</td>
             </tr>
             <tr>
               <td>AWS Neptune</td>
+              <td>fully managed graph DB, social network, knowldge grapg/wiki,fraud detection,
+                recommendation engine, QUERY?: Gremlin/SparkQL/openCypher</td>
               <td></td>
-              <td></td>
-              <td></td>
+              <td>multi az 3 times replication</td>
             </tr>
             <tr>
               <td>AWS Timestream</td>
-              <td></td>
+              <td>Time series, serverless , Trillion events /day,sql compatible
+                IOT apps, operationalk apps,real time analytics
+              </td>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <td>AWS Redshift</td>
+              <td>fully managed petabyte scale,datra warehouse</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS quicksight</td>
               <td></td>
               <td></td>
               <td></td>
