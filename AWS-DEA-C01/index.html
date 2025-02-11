@@ -127,9 +127,9 @@
             </tr>
             <tr>
               <td>AWS S3</td>
-              <td>Object Storage: unlimited data storage, backup and recovery, 
+              <td>Object Storage: unlimited data storage, backup and recovery,
                 and big data analytics,web hosting,backup recovery,application data
-                when data is colder and large
+                when data is colder and large,BLOB
               </td>
               <td>cheap and based on tier</td>
               <td>HA</td>
@@ -156,8 +156,8 @@
             <tr>
               <td>AWS DyanamoDB</td>
               <td>Mobile gaming ,sensor network, gaming, digital ad serving, ecommerce shopping.,
-                 web session management,capturing live events like voting,meta data storage for s3,
-                 any time data is hot and small and to be injested at scale
+                web session management,capturing live events like voting,meta data storage for s3,
+                any time data is hot and small and to be injested at scale
                 When not to use : Relational data,blob,joins, low read writes
               </td>
               <td>normal pay by provision,ondemand is 2.5 times expensive</td>
@@ -165,13 +165,13 @@
             </tr>
             <tr>
               <td>AWS RDS</td>
-              <td>rdbms like aurora,mysql,mariadb,posgressql,oracle,sql server: for small data</td>
+              <td>rdbms like aurora,mysql,mariadb,posgressql,oracle,sql server: for small data,OLTP</td>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <td>AWS DocumentDB</td>
-              <td>mongodb replacementJSON ,Million req/s,increments of 10Gb, web mobile games,streaming</td>
+              <td>mongodb replacementJSON ,Million req/s,increments of 10Gb, web mobile games,streaming,OLTP</td>
               <td></td>
               <td>Fully managed service, High HA multi region 3AZ</td>
             </tr>
@@ -181,7 +181,7 @@
               <td></td>
               <td>Multi az transaction log</td>
             </tr>
-           
+
             <tr>
               <td>AWS Keyspaces</td>
               <td>Apache cassandra,nosql distributed,fully managed,iot devices, time-series,cql </td>
@@ -190,7 +190,7 @@
             </tr>
             <tr>
               <td>AWS Neptune</td>
-              <td>fully managed graph DB, social network, knowldge grapg/wiki,fraud detection,
+              <td>fully managed graph DB, social network, knowldge graph/wiki,fraud detection,
                 recommendation engine, QUERY?: Gremlin/SparkQL/openCypher</td>
               <td></td>
               <td>multi az 3 times replication</td>
@@ -198,14 +198,15 @@
             <tr>
               <td>AWS Timestream</td>
               <td>Time series, serverless , Trillion events /day,sql compatible
-                IOT apps, operationalk apps,real time analytics
+                IOT apps, operational apps,real time analytics
               </td>
               <td></td>
               <td></td>
             </tr>
             <tr>
               <td>AWS Redshift</td>
-              <td>fully managed petabyte scale,data warehouse</td>
+              <td>fully managed petabyte scale,data warehouse,MPP,OLAP,analytics,ad impression clicks,
+                social trends,global sales data,historical stock data ,DW modernization,gaming data aggregation</td>
               <td></td>
               <td></td>
             </tr>
@@ -213,6 +214,60 @@
               <td>AWS quicksight</td>
               <td></td>
               <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Data sync</td>
+              <td>DataSync is best for transferring data between on-premises and AWS, NFS/SMB(onprem) to AWS
+                (s3/EFS/Fsx/...) </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS transfer family</td>
+              <td> sftp/ftp/ftps to s3 </td>
+              <td>provisioned endpoint /hr + data transfer</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS EC2</td>
+              <td>Spot instances are good candidate for ML /big data work with checkpoint enabled.so things can be
+                restored</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Lambda</td>
+              <td> run code snippets, stateless bit of code proceessing ,it can act as a glue between services
+                Lamda polls KDS to pull data </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS SAM</td>
+              <td> Serverless Application Model, is a framework for developing and deploying serverless applications,
+                using YAML code ,generates cloudformation scripts </td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Batch</td>
+              <td> good for non ETL work ,
+                runs batch jobs (cleaning fs, processing images basically any computing job )on Docker images ,
+                serverless , you can schdeule by cloudwatch events or via step function </td>
+              <td>pay for ec2 instances </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Glue</td>
+              <td> any ETL job(data side) </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Graviton</td>
+              <td> compute memmory optimized good for android game streaming </td>
+              <td> good price performance ratio</td>
               <td></td>
             </tr>
           </tbody>
