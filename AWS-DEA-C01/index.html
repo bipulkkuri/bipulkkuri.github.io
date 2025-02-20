@@ -211,12 +211,6 @@
               <td></td>
             </tr>
             <tr>
-              <td>AWS quicksight</td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
               <td>AWS Data sync</td>
               <td>DataSync is best for transferring data between on-premises and AWS, NFS/SMB(onprem) to AWS
                 (s3/EFS/Fsx/...) </td>
@@ -254,20 +248,154 @@
               <td>AWS Batch</td>
               <td> good for non ETL work ,
                 runs batch jobs (cleaning fs, processing images basically any computing job )on Docker images ,
-                serverless , you can schdeule by cloudwatch events or via step function </td>
+                serverless , you can schdeule by cloudwatch events or via step function ,
+                is designed specifically for high-throughput batch computing workloads. </td>
               <td>pay for ec2 instances </td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>AWS Glue</td>
-              <td> any ETL job(data side) </td>
-              <td> </td>
               <td></td>
             </tr>
             <tr>
               <td>AWS Graviton</td>
               <td> compute memmory optimized good for android game streaming </td>
               <td> good price performance ratio</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS ECS</td>
+              <td> AWS ECS as a) EC2 launch type needs ECS agent on ec2 b) Fargate lauch type(serverless)
+                s3 cannot be mounted as a filesystem on ECS only EFS
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS ECR </td>
+              <td>Elastic Container Registry:Store and manage docker images from public and private repo
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS EKS </td>
+              <td>Elastic Kubernetes Service, managed K8s cluster in AWS ,K8s is cloud agnostic
+                a) Managed b) Self Managed Node groups c) Fargate
+                EBS,EFS(for Fargate),FSx support Netapp/Lustre
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Glue </td>
+              <td>Any ETL job(data side),fully managed,
+                servlerless discovery and table defination/schema and publish to athena,redshift,sql db's from
+                datalakes,rds,redshift
+                a) periodically and ondemand,data remains in source place.
+                Glue crawler extracts data in partitions from s3 and puts in Glue Data catalog
+                Hive: run SQL like queries from EMR, GLUE <-> hive
+                  Glue ETL : can be event driven (triggers)or schdeule,Encryption,DPU by running job metrics in Glue
+                  Console.
+                  supports bookmarks
+                  Glue for Spark , for other engines like hive pig use data pipeline EMR
+                  Spark Structured Streaming is supported from Kinesis /Kafka
+                  AWS Glue studio: Visual job editor DAG,visual job dashboard
+                  AWS Glue Data Quality: DQDL fail or report to cloud watch
+                  AWS Glue Data Brew: visual data preperation tool,output to S3 ,clean and normalize data
+                  AWS Glue Workflows:viual orchestration tool for glue for multi job multi crawler, Triggers schdeuled
+                  or on demand or event bridge
+              </td>
+              <td>cost effective,billed by sec for crawler, billed by min for development ,first million obj are free
+                for Glue data catalog </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Lake formation </td>
+              <td> Build on top of glue, creates secure data lakes in days,auditing,access control,encryption,anything
+                glue can do it can do
+                then use athena/redshift/emr to query
+                Access can be given to only administrator reciepent and AWS Resouce Access manager for external accounts
+                and
+                IAM permissions for cross account access
+                Governed Tables: provides ACID support automatic  optimization/comaction is done
+                Row coloumn cell level security
+                use case: good for column based security
+              </td>
+              <td>no cost ,cost of unerlying sources and glue/s3/emr/redshift </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Athena </td>
+              <td> Serverless interactive query s3 or data lake, data stays in s3 ,
+                Athena Workgroups: Organize teams/users/apps via WORKGROUPS individual limit can be set
+                Encryption:SSE-S3,SSE-KMS,CSE-KMS at rest and TLS on transit
+                Do not use for formatted visualization use quicksight , do not use for ETL use Glue,
+                small number of large files perform better than large number of small files, ORC Parquet better (splittable/coloumnar)
+                ACID transaction support by Table type iceberg, but manual optimization/comaction is needed
+                IAM based Operation based security unlike Data Lake
+              </td>
+              <td>pay as u go,failed and DDL are not charged </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Apache spark </td>
+              <td> Usecase: distributed processing for big data for OLAP , batch,interactive,graph and stream processing ,machine learning mllib
+                spark is not meant for OLTP 
+                Amazon athena can work with apache spark by selcting spark engine insted of SQL engine
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Athena federated query </td>
+              <td>  Query data other than s3, supports athena views,athena views are stored in glue not in DB.
+                Can do cross account federated query,and passthrough query for native query
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS EMR </td>
+              <td> is a managed hadoop instances on ec2,master(manages),core(store data),task(processing) nodes ,
+                 use spot instance for task node
+                 Transient vs Long running clusters
+                 supports s3 for input and output data, HDFS is ephipermal EBS,EMRFS
+              </td>
+              <td> charge by hr</td>
+              <td> Managed Scaling , ADD core node then task node, REMOVE task node then core node</td>
+            </tr>
+            <tr>
+              <td>AWS EMR serverless </td>
+              <td> no longer need to estimate capacity, but add 10% more for initial capacity request
+                EMR on EKS  
+              </td>
+              <td></td>
+              <td>all within one region across multiple AZ</td>
+            </tr>
+
+            <tr>
+              <td>AWS Kiniseis data stream </td>
+              <td> data is distrubited in shards ,shard need to be provisioned during creation
+                Retention : 1-365 days ,immutablity data
+               Producer : Partition Key + 1MB data blob, so 1MB/s or 1000msg/s
+               Consumer : Partition Key + seq+blob , Shared : 2Mb/s per shard all consumers or Enhanced: 2MB/s per shard/conumser
+               Kinesis Producer SDK : usecase low throughput , high latency,AWS lambda,simple api
+               ProvsionedThroughputExceededException : Hot Partionkey problem do retry backoff.increase shard,distribute key
+              </td>
+              <td>Provioned mode: pay per shard /hr  
+                  On demand mode: pay per shard /hr  & data in out /GB 
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS quicksight </td>
+              <td> formatted customized visualization
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS Datapipeline </td>
+              <td> to schedule jobs
+              </td>
+              <td> </td>
               <td></td>
             </tr>
           </tbody>
