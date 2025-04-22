@@ -376,17 +376,65 @@
                 Retention : 1-365 days ,immutablity data
                Producer : Partition Key + 1MB data blob, so 1MB/s or 1000msg/s
                Consumer : Partition Key + seq+blob , Shared : 2Mb/s per shard all consumers or Enhanced: 2MB/s per shard/conumser
-               Kinesis Producer SDK : usecase low throughput , high latency,AWS lambda,simple api
+               Kinesis Producer SDK : usecase low throughput , high latency,AWS lambda,simple api , use for latest record like iot
                ProvsionedThroughputExceededException : Hot Partionkey problem do retry backoff.increase shard,distribute key
+               Kinesis Producer Librabry : C++ /Java supports Synchronous and Asynchronous api , 
+               Batching (Collect & aggregate) RecordMaxBufferedTime 100ms
+               KCL : ExpiredIteraetor Exception : increase WCU in Dynamodb, KCL supports checkpointing Consumer Librabry but is polling
+               KConnector lirary : needs EC2 runs as agent and pushes to s3/redhift,dynamodb/opensearch
+               KCL Enhanced fanout :is pushing data , 2mb/s per shard/consumer,use case : low latency req ~70ms. many consumers
+               Standardard consumers: usecase less conusmers ,tolerate 200ms latency,low cost
+               Kiniesis Shard splitting (handle high traffic) and merge shard (handle low traffic and cost)
+               Out of order records after resharding : make sure consumer reads from parent first entierly until no records before going to splitted shard
               </td>
               <td>Provioned mode: pay per shard /hr  
                   On demand mode: pay per shard /hr  & data in out /GB 
               </td>
+              <td>KCL manual scaling no auto</td>
+            </tr>
+            <tr>
+              <td>AWS Kinesis Datafirehose </td>
+              <td> near realtime in batches , buffer time or space, 4 places to send data Opensearch,s3,redshift,splunk
+                transform via lambda
+              </td>
+              <td> streams has custome code for consumer and producer , Datafirehose is fully managed no data storage </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS MSK </td>
+              <td> use when data storgae needs is higher 1MB by default but is configurable, Topics with partitions
+                you can add partion not remove
+              </td>
+              <td> </td>
               <td></td>
             </tr>
             <tr>
               <td>AWS quicksight </td>
-              <td> formatted customized visualization
+              <td> formatted customized visualization business analytics
+                USECASE: adhoc exploration and visualization of data
+                Data sources :redshift,athena,s3,aurora, rds, opensearch,iot analytics,files csv/tsv/log formats,SAAS salesforce
+                SPICE : Super fast parallel in memory calculation engine
+                Dont use ETL only limited transformation
+                RLS and CLS row /column level security
+                create new security groups with inbound rules from the ipranges of quick sight to redshift in that region
+                for Enterprise edition use ENI , 
+                perering connection  , transit gateway or vpc sharing  for crossaccount access
+                Quicksight Q: NLP support 
+                ML insights,forcasting,Anomaly detection,Auto narratives
+                calculated Fields
+                Level aware calculations aggergation or window function
+                Fixed Precision: 4 decimnal 
+                FLoat Precision: 16 decimal 
+              </td>
+              <td> </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>AWS opensearch and serverless </td>
+              <td> anlaysis search reporting petabyte scaling
+                text search, log analytics, app monitoring, secuity analytics
+                dont use for OLTP
+                serverless: on demand , collections, encryption at rest ,OCU default 2 units r/w
               </td>
               <td> </td>
               <td></td>

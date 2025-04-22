@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>System Design Back Of The Envelope Calculator BOTEC</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: #007BFF;
+            color: #fff;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .output {
+            margin-top: 20px;
+            background: #eef;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .section {
+            margin-top: 30px;
+        }
+
+        .linkedin-link {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+        }
+
+        .linkedin-link img {
+            width: 30px;
+            height: 30px;
+            filter: invert(29%) sepia(91%) saturate(748%) hue-rotate(176deg) brightness(94%) contrast(92%);
+            transition: transform 0.2s ease;
+        }
+
+        .linkedin-link img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="linkedin-link">
+        <a href="https://www.linkedin.com/in/bipulkkuri/" target="_blank">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/linkedin.svg" alt="LinkedIn" />
+        </a>
+    </div>
+    
+    <div class="container">
+        <h1>Back Of The Envelope Calculator BOTEC</h1>
+        <p>Estimate servers, storage, bandwidth and pricing for system.</p>
+        
+        <div class="section">
+            <h2>Input Parameters</h2>
+
+            <label>Daily Active Users (DAU):</label>
+            <input type="number" id="dau" value="200000000" />
+
+            <label>Requests per User per Day:</label>
+            <input type="number" id="reqPerUser" value="10" />
+
+            <label>Server RPS Capacity:</label>
+            <p>It’s the maximum number of requests a single server can handle every second without being overwhelmed.
+            </p>
+            <input type="number" id="rpsPerServer" value="64000" />
+        </div>
+
+        <div class="section">
+            <h2>Content Size Parameters</h2>
+
+            <label>Data(Payload) Size (bytes):</label>
+            <input type="number" id="dataSize" value="150" />
+
+            <label>Image Percentage (0–1):</label>
+            <input type="number" step="0.01" id="imagePct" value="0.1" />
+
+            <label>Image Size (bytes):</label>
+            <input type="number" id="imageSize" value="100000" />
+
+            <label>Video Percentage (0–1):</label>
+            <input type="number" step="0.01" id="videoPct" value="0.04" />
+
+            <label>Video Size (bytes):</label>
+            <input type="number" id="videoSize" value="3500000" />
+        </div>
+
+        <div class="section">
+            <h2>Pricing Options</h2>
+
+            <label>Select Compute Type:</label>
+            <select id="computeType">
+                <option value="ec2">EC2 (AWS)</option>
+                <option value="lambda">Lambda (AWS)</option>
+                <option value="azureVm">Azure VM</option>
+                <option value="azureFunction">Azure Function</option>
+                <option value="gcpVm">GCP VM</option>
+                <option value="gcpFunction">GCP Function</option>
+            </select>
+
+            <!-- EC2 Pricing Input -->
+            <div id="ec2Inputs">
+                <label>EC2 Hourly Rate ($):</label>
+                <input type="number" id="ec2HourlyRate" value="3.54816" />
+            </div>
+
+            <!-- Lambda Pricing Inputs -->
+            <div id="lambdaInputs" style="display:none;">
+                <label>Lambda Memory Size (MB):</label>
+                <input type="number" id="lambdaMemory" value="1024" />
+
+                <label>Avg Execution Time per Request (ms):</label>
+                <input type="number" id="lambdaTime" value="100" />
+
+                <label>Lambda Request Cost per Million ($):</label>
+                <input type="number" id="lambdaRequestCost" value="0.20" />
+
+                <label>Lambda Duration Cost per GB-Second ($):</label>
+                <input type="number" id="lambdaDurationCost" value="0.0000166667" />
+            </div>
+
+            <!-- Azure Pricing Inputs -->
+            <div id="azureInputs" style="display:none;">
+                <h3>Azure Pricing</h3>
+                <label>Azure VM Hourly Rate ($):</label>
+                <input type="number" id="azureVmHourlyRate" value="0.075" />
+
+                <label>Azure Function Execution Cost per 100ms ($):</label>
+                <input type="number" id="azureFunctionCost" value="0.000016" />
+            </div>
+
+            <!-- GCP Pricing Inputs -->
+            <div id="gcpInputs" style="display:none;">
+                <h3>GCP Pricing</h3>
+                <label>GCP VM Hourly Rate ($):</label>
+                <input type="number" id="gcpVmHourlyRate" value="0.068" />
+
+                <label>GCP Function Execution Cost per 100ms ($):</label>
+                <input type="number" id="gcpFunctionCost" value="0.0000004" />
+            </div>
+
+        </div>
+
+        <button onclick="calculate()">Run BOTEC</button>
+
+        <div class="output" id="output"></div>
+    </div>
+    <script>
+        // Update pricing inputs visibility and default values based on the selected compute type
+        document.getElementById('computeType').addEventListener('change', function () {
+            const computeType = this.value;
+
+            // Hide all pricing inputs first
+            document.getElementById('lambdaInputs').style.display = 'none';
+            document.getElementById('azureInputs').style.display = 'none';
+            document.getElementById('gcpInputs').style.display = 'none';
+            document.getElementById('ec2Inputs').style.display = 'none';
+
+            // Show relevant pricing inputs based on selected compute type
+            if (computeType === 'lambda') {
+                document.getElementById('lambdaInputs').style.display = 'block';
+            } else if (computeType === 'azureVm' || computeType === 'azureFunction') {
+                document.getElementById('azureInputs').style.display = 'block';
+            } else if (computeType === 'gcpVm' || computeType === 'gcpFunction') {
+                document.getElementById('gcpInputs').style.display = 'block';
+            } else if (computeType === 'ec2') {
+                document.getElementById('ec2Inputs').style.display = 'block';
+            }
+        });
+
+        // Default pricing values for the first load
+        document.getElementById('computeType').dispatchEvent(new Event('change'));
+        function calculate() {
+            const dau = parseInt(document.getElementById('dau').value) || 0;
+            const reqPerUser = parseInt(document.getElementById('reqPerUser').value) || 0;
+            const rpsPerServer = parseInt(document.getElementById('rpsPerServer').value) || 1;
+
+            const dataSize = parseInt(document.getElementById('dataSize').value) || 0;
+            let imagePct = parseFloat(document.getElementById('imagePct').value) || 0;
+            let imageSize = parseInt(document.getElementById('imageSize').value) || 0;
+            let videoPct = parseFloat(document.getElementById('videoPct').value) || 0;
+            let videoSize = parseInt(document.getElementById('videoSize').value) || 0;
+
+            const computeType = document.getElementById('computeType').value;
+            const totalRequests = dau * reqPerUser;
+
+            const serversPeak = Math.ceil(totalRequests / rpsPerServer);
+            const serversPareto = Math.ceil((0.8 * totalRequests) / (0.2 * 86400 * rpsPerServer));
+            const serversEven = Math.ceil(totalRequests / (86400 * rpsPerServer));
+            const serversOffPeak = Math.ceil((0.2 * totalRequests) / (0.8 * 86400 * rpsPerServer));
+
+            const totalDataEntries = dau * 3;
+            const adjustedDataSize = dataSize + (imagePct > 0 ? imagePct * imageSize : 0) + (videoPct > 0 ? videoPct * videoSize : 0);
+            const dailyStorage = totalDataEntries * adjustedDataSize;
+            const dailyStorageGB = (dailyStorage / (1024 ** 3)).toFixed(2);
+
+            const incomingMbps = ((dailyStorage * 8) / (24 * 3600 * 1000000)).toFixed(2);
+            const dataAccessed = dau * 50;
+            const outgoingDaily = dataAccessed * adjustedDataSize;
+            const outgoingMbps = ((outgoingDaily * 8) / (24 * 3600 * 1000000)).toFixed(2);
+
+            let costEstimate = '';
+            const ec2HourlyRate = parseFloat(document.getElementById('ec2HourlyRate').value) || 3.54816;
+            const lambdaRequestCost = parseFloat(document.getElementById('lambdaRequestCost').value) || 0.20;
+            const lambdaDurationCost = parseFloat(document.getElementById('lambdaDurationCost').value) || 0.0000166667;
+            const azureVmHourlyRate = parseFloat(document.getElementById('azureVmHourlyRate').value) || 0.075;
+            const azureFunctionCost = parseFloat(document.getElementById('azureFunctionCost').value) || 0.000016;
+            const gcpVmHourlyRate = parseFloat(document.getElementById('gcpVmHourlyRate').value) || 0.068;
+            const gcpFunctionCost = parseFloat(document.getElementById('gcpFunctionCost').value) || 0.0000004;
+
+            if (computeType === 'ec2') {
+                const hoursPeak = 0.2 * 24;
+                const hoursOffPeak = 0.8 * 24;
+                const peakCost = serversPeak * ec2HourlyRate * hoursPeak;
+                const offPeakCost = serversOffPeak * ec2HourlyRate * hoursOffPeak;
+                const totalCost = (peakCost + offPeakCost).toFixed(2);
+                costEstimate = `
+            <strong>EC2 Cost:</strong><br/>
+            ▪ Peak (20% time, 80% traffic): $${peakCost.toFixed(2)}<br/>
+            ▪ Off-Peak (80% time, 20% traffic): $${offPeakCost.toFixed(2)}<br/>
+            <strong>Total (24h):</strong> $${totalCost}
+        `;
+            } else if (computeType === 'azureVm') {
+                const hoursPeak = 0.2 * 24;
+                const hoursOffPeak = 0.8 * 24;
+                const peakCost = serversPeak * azureVmHourlyRate * hoursPeak;
+                const offPeakCost = serversOffPeak * azureVmHourlyRate * hoursOffPeak;
+                const totalCost = (peakCost + offPeakCost).toFixed(2);
+                costEstimate = `
+            <strong>Azure VM Cost:</strong><br/>
+            ▪ Peak: $${peakCost.toFixed(2)}<br/>
+            ▪ Off-Peak: $${offPeakCost.toFixed(2)}<br/>
+            <strong>Total (24h):</strong> $${totalCost}
+        `;
+            } else if (computeType === 'gcpVm') {
+                const hoursPeak = 0.2 * 24;
+                const hoursOffPeak = 0.8 * 24;
+                const peakCost = serversPeak * gcpVmHourlyRate * hoursPeak;
+                const offPeakCost = serversOffPeak * gcpVmHourlyRate * hoursOffPeak;
+                const totalCost = (peakCost + offPeakCost).toFixed(2);
+                costEstimate = `
+            <strong>GCP VM Cost:</strong><br/>
+            ▪ Peak: $${peakCost.toFixed(2)}<br/>
+            ▪ Off-Peak: $${offPeakCost.toFixed(2)}<br/>
+            <strong>Total (24h):</strong> $${totalCost}
+        `;
+            } else if (computeType === 'lambda') {
+                const lambdaMemory = parseInt(document.getElementById('lambdaMemory').value) || 1024;
+                const lambdaTime = parseInt(document.getElementById('lambdaTime').value) || 100;
+
+                // Peak: 80% of requests in 20% time
+                const peakRequests = totalRequests * 0.8;
+                const peakReqMillions = peakRequests / 1e6;
+                const peakExecSeconds = (lambdaTime / 1000) * peakRequests;
+                const peakGBSeconds = (lambdaMemory / 1024) * peakExecSeconds;
+                const peakRequestCost = peakReqMillions * lambdaRequestCost;
+                const peakDurationCost = peakGBSeconds * lambdaDurationCost;
+
+                // Off-Peak: 20% of requests in 80% time
+                const offPeakRequests = totalRequests * 0.2;
+                const offPeakReqMillions = offPeakRequests / 1e6;
+                const offPeakExecSeconds = (lambdaTime / 1000) * offPeakRequests;
+                const offPeakGBSeconds = (lambdaMemory / 1024) * offPeakExecSeconds;
+                const offPeakRequestCost = offPeakReqMillions * lambdaRequestCost;
+                const offPeakDurationCost = offPeakGBSeconds * lambdaDurationCost;
+
+                const totalLambdaCost = (peakRequestCost + peakDurationCost + offPeakRequestCost + offPeakDurationCost).toFixed(2);
+
+                costEstimate = `
+            <strong>Lambda Cost Breakdown:</strong><br/>
+            ▪ Peak (80% traffic): $${(peakRequestCost + peakDurationCost).toFixed(2)}<br/>
+            ▪ Off-Peak (20% traffic): $${(offPeakRequestCost + offPeakDurationCost).toFixed(2)}<br/>
+            <strong>Total (per day):</strong> $${totalLambdaCost}
+        `;
+            } else if (computeType === 'azureFunction') {
+                const azureFunctionRequestsPeak = totalRequests * 0.8 / 1e6;
+                const azureFunctionRequestsOffPeak = totalRequests * 0.2 / 1e6;
+                const executionTime = 100; // 100ms per request
+
+                const costPeak = azureFunctionRequestsPeak * azureFunctionCost * executionTime;
+                const costOffPeak = azureFunctionRequestsOffPeak * azureFunctionCost * executionTime;
+                const totalAzureFuncCost = (costPeak + costOffPeak).toFixed(2);
+
+                costEstimate = `
+            <strong>Azure Function Cost:</strong><br/>
+            ▪ Peak (80% traffic): $${costPeak.toFixed(2)}<br/>
+            ▪ Off-Peak (20% traffic): $${costOffPeak.toFixed(2)}<br/>
+            <strong>Total (per day):</strong> $${totalAzureFuncCost}
+        `;
+            } else if (computeType === 'gcpFunction') {
+                const gcpFunctionRequestsPeak = totalRequests * 0.8 / 1e6;
+                const gcpFunctionRequestsOffPeak = totalRequests * 0.2 / 1e6;
+                const executionTime = 100;
+
+                const costPeak = gcpFunctionRequestsPeak * gcpFunctionCost * executionTime;
+                const costOffPeak = gcpFunctionRequestsOffPeak * gcpFunctionCost * executionTime;
+                const totalGCPFuncCost = (costPeak + costOffPeak).toFixed(2);
+
+                costEstimate = `
+            <strong>GCP Function Cost:</strong><br/>
+            ▪ Peak (80% traffic): $${costPeak.toFixed(2)}<br/>
+            ▪ Off-Peak (20% traffic): $${costOffPeak.toFixed(2)}<br/>
+            <strong>Total (per day):</strong> $${totalGCPFuncCost}
+        `;
+            }
+
+
+
+            document.getElementById('output').innerHTML = `
+        <h2>Results</h2>
+        <strong>Total Requests per Day:</strong> ${totalRequests.toLocaleString()}<br/>
+        <em>(${dau.toLocaleString()} users × ${reqPerUser} requests)</em><br/><br/>
+
+        <strong>Servers Needed (Peak Load):</strong> ${serversPeak.toLocaleString()}<br/>
+        <em>(${totalRequests.toLocaleString()} / ${rpsPerServer} RPS per server)</em><br/>
+
+        <strong>Servers (Pareto Principle, 20% time):</strong> ${serversPareto.toLocaleString()}<br/>
+        <em>(80% of traffic in 20% of 86400s → ${(0.2 * 86400).toFixed(0)}s)</em><br/>
+
+        <strong>Servers (Even Load):</strong> ${serversEven.toLocaleString()}<br/>
+        <em>(Evenly over full day: 86400s)</em><br/>
+
+        <strong>Servers (Off-Peak, 20% of requests over 80% of time):</strong> ${serversOffPeak.toLocaleString()}<br/>
+        <em>(20% of traffic over ${(0.8 * 86400).toFixed(0)}s)</em><br/><br/>
+
+        <strong>Estimated Daily Data Storage:</strong> ${dailyStorageGB} GB<br/>
+        <em>${totalDataEntries.toLocaleString()} entries × adjusted content size</em><br/><br/>
+
+        <strong>Incoming Bandwidth:</strong> ${incomingMbps} Mbps<br/>
+        <strong>Outgoing Bandwidth:</strong> ${outgoingMbps} Mbps<br/><br/>
+
+        <h3>Cost Estimation</h3>
+        ${costEstimate}
+    `;
+        }
+        //change as input is changed
+        document.querySelectorAll('input, select').forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+    </script>
+</body>
+
+</html>
